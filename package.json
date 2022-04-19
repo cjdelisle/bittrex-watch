@@ -1,0 +1,16 @@
+{
+  "name": "bittrex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bittrex.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mattermost-client": "^6.5.0",
+    "signalr-client": "^0.0.20",
+    "uuid": "^8.3.2"
+  }
+}
