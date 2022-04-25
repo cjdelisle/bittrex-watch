@@ -3,6 +3,7 @@ const zlib = require('zlib');
 const crypto = require('crypto');
 const uuid = require('uuid');
 const Mattermost = require('mattermost-client');
+const Util = require('./util');
 
 const Config = require('./config.js');
 
@@ -16,21 +17,9 @@ var client;
 let mm;
 var resolveInvocationPromise = () => { };
 
-const awaitLogin = () => {
-    const mm = new Mattermost(Config.server, Config.team, { wssPort: 443, httpPort: null });
-    mm.login(Config.email, Config.passwd);
-    return new Promise((resolve) => {
-        mm.on('loggedIn', () => {
-            console.log('logged in');
-            resolve(mm);
-        });
-    });
-};
-
 async function main() {
-    process.env.MATTERMOST_LOG_LEVEL = 'notice';
     client = await connect();
-    mm = await awaitLogin();
+    mm = await Util.mmLoginAsync(Config);
     if (apisecret) {
         await authenticate(client);
     } else {
@@ -105,13 +94,6 @@ async function invoke(client, method, ...args) {
   });
 }
 
-const round2 = (n) => Math.round(n * 100) / 100;
-
-const leftpad = (x, count) => {
-    x = ''+x;
-    return new Array(count - x.length).join(' ') + x;
-};
-
 function messageReceived(message) {
   const data = JSON.parse(message.utf8Data);
   if (data['R']) {
@@ -155,9 +137,10 @@ function messageReceived(message) {
             } else {
                 price = maxP;
             }
-            const msg = time + ' ' + ts + leftpad(Math.round(totq), 8) + ' PKT\tFOR $' + round2(totc) + '\tPRICE $' + price;
+            const msg = time + ' ' + ts + Util.leftpad(Math.round(totq), 8) + ' PKT\tFOR $' +
+              Util.round2(totc) + '\tPRICE $' + price;
             console.log(msg);
-            mm.postMessage('`' + msg + '`', Config.channel);
+            mm.postMessage('`' + msg + '`', Config.bittrex_channel);
           });
         }
         else if (m.M == 'heartbeat') {

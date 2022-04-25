@@ -4,5 +4,6 @@ module.exports = {
     passwd: 'passwd',
     server: 'pkt.chat',
     team: 'pkt',
-    channel: 'ydf6sfhcgfno8pmjw7mcakpe8w', // channel internal id
+    bittrex_channel: 'ydf6sfhcgfno8pmjw7mcakpe8w', // #bittrex-watch internal id
+    bitmart_channel: '5cscca6qeidwxk7srxg3ggrbuc', // #bitmart-watch internal id
 };
