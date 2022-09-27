@@ -2,7 +2,6 @@ const signalR = require('signalr-client');
 const zlib = require('zlib');
 const crypto = require('crypto');
 const uuid = require('uuid');
-const Mattermost = require('mattermost-client');
 const Util = require('./util');
 
 const Config = require('./config.js');

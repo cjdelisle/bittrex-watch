@@ -1,6 +1,7 @@
 const WebSocket = require('ws').WebSocket;
 const Fs = require('fs');
 const Util = require('./util');
+const Config = require('./config');
 
 const loaded = (mm) => {
     let time = 0;
@@ -34,7 +35,7 @@ const loaded = (mm) => {
                 time = a.s_t;
                 Fs.writeFileSync('./db.json', JSON.stringify({time}));
             }
-            const d = new Date(a.s_t * 1000).toISOString().replace(/^[^T]*T([^.]*).[0-9]*Z$/, (all, x) => x);
+            const d = new Date(a.s_t * 1000).toISOString().replace(/^[^T]*T([^.]*).[0-9]*Z$/, (_, x) => x);
             const msg = d + ' ' + Util.rightpad(a.side.toUpperCase(), 5) +
                 Util.leftpad(a.size, 9) + ' PKT FOR' +
                 Util.leftpad(' $' + Util.round2(Number(a.size) * Number(a.price)), 15) +
@@ -66,4 +67,4 @@ const main = async () => {
     const mm = await Util.mmLoginAsync(Config);
     loaded(mm);
 };
-await main();
+const _ = main();

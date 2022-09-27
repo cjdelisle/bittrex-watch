@@ -1,7 +1,10 @@
+const Mattermost = require('mattermost-client');
+
 module.exports.round2 = (n) => Math.round(n * 100) / 100;
 
 module.exports.leftpad = (x, count) => {
     x = ''+x;
+    if (x.length >= count) { return x; }
     return new Array(count - x.length).join(' ') + x;
 };
 
